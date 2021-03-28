@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// REDIS
 const redis = require('redis');
 
 const redisClient = redis.createClient({
@@ -17,6 +18,7 @@ redisClient.on('connect', () => {
     console.log('Connected to Redis server');
 });
 
+// POSTGRES
 const { Pool } = require('pg');
 
 const pgClient = new Pool({
@@ -33,7 +35,7 @@ pgClient.on('error', () => {
 
 pgClient
 .pgClient
-.query('CREATE TABLE IF NOT EXISTS jewelry (number INT)')
+.query('CREATE TABLE IF NOT EXISTS jewelry (id SERIAL PRIMARY KEY, name TEXT, number INT)')
 .catch( (err) => {
     console.log(err);
 });
@@ -46,3 +48,53 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log('API listening on port ${PORT}');
 });
+
+var global_id = 1
+
+// REST
+const PORT = 5000;
+
+// GET ALL
+app.get('/jewels', (request, response) => {
+    console.log(`Executed endpoint /jewels. Get all data`);
+
+    pgClient.query('SELECT * FROM jewelry;', (pgError, queryResult) => {
+        if (!queryResult.rows){
+            response.json([]);
+        }
+        else{
+            response.status(200).json(queryResult.rows);
+        }
+    });
+})
+
+// GET ID
+app.get('/jewels/:id', (request, response) => {
+    const id = request.params.id;
+    console.log(`Executed endpoint /jewels/${id}. Get jewelry by id.`);
+
+    pgClient.query('SELECT * FROM jewelry WHERE id = $1;', [id], (pgError, queryResult) => {
+        if (!queryResult.rows){
+            response.json([]);
+        }
+        else{
+            response.status(200).json(queryResult.rows);
+        }
+    });
+})
+
+
+// POST
+app.post('/add_jewel', (request, response) =>{
+    console.log('Executed endpoint /add_jewel.);
+    const jewel = request.body.jewel;
+    const number = request.body.number;
+
+    redisClient.get(number, (err, cachedResult) => {
+            pgClient
+            .query('INSERT INTO jewelry (jewel, number) VALUES ($1, $2)', [jewel, number])
+            .catch(pgError => console.log(pgError));
+            response.status(200).send(`Added new jewelry`)
+        }
+    });
+
