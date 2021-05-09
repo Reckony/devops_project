@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+    mypostgres:
+        image: 'postgres:alpine'
+        environment:
+          - POSTGRES_PASSWORD=1qaz2wsx
+        volumes:
+          - ./postgresdata:/var/lib/postgresql/data
+
+    myredis:
+        image: 'redis:alpine'
+
+    nginx:
+        restart: always
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./nginx
+        ports:
+            - '8080:80'
+
+    backend:
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./backend
+        volumes:
+            - "/opt/app/node_modules"
+        ports:
+            - '4000:4000'
+        environment:
+            - REDIS_HOST=myredis
+            - REDIS_PORT=6379
+            - POSTGRES_USER=postgres
+            - POSTGRES_HOST=mypostgres
+            - POSTGRES_DB=postgres
+            - POSTGRES_PASSWORD=1qaz2wsx
+            - PGPORT=5432
+        depends_on:
+            - mypostgres
+            - myredis
+            - nginx
+
+    frontend:
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./frontend
+        volumes:
+            - "/opt/app/node_modules"
+        environment:
+            CHOKIDAR_USEPOLLING: "true"
+        tty: true
+        depends_on:
+            - mypostgres
+            - myredis
+            - backend
+            - nginx

@@ -1,0 +1,9 @@
+docker stop myredis mypostgres
+docker network rm my_app
+
+docker network create my_app
+docker build . -t martal3szczynska/mywebapp:latest
+
+docker run -d --rm --network my_app --name myredis redis:alpine
+docker run -v /Users/reckony/Desktop/devops/projekt/postresdata:/var/lib/postgresql/data --rm --name=mypostgres --network=my_app -e POSTGRES_PASSWORD=1qaz2wsx postgres:alpine
+# docker run --rm --network my_app --name my_app -p 9090:9090 martal3szczynska/latest

@@ -13,8 +13,8 @@ services:
             - /Users/reckony/Desktop/devops/projekt/webapp/postgresdata:/var/lib/postgresql/data
     mybackend:
         build:
-            dockerfile: Dockerfile
-            context: mybackend
+            dockerfile: Dockerfile.dev
+            context: ./
         volumes:
             - /opt/app/node_modules
             - ./:/opt/app
