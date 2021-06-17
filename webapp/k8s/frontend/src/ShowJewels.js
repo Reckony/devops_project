@@ -17,7 +17,7 @@ const ShowJewels = (props) => {
         event.preventDefault();
     };
 
-    const handleShow = (event) => {
+    const handleShowTeam = (event) => {
         setJewelId(event.target.value);
         axios.get(`/api/jewels/${jewelId}`
         )
@@ -29,7 +29,7 @@ const ShowJewels = (props) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            handleShow(event)
+            handleShowTeam(event)
         }
     }
 

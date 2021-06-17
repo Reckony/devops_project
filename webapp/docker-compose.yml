@@ -7,19 +7,17 @@ version: '3'
 services:
     myredis:
         image: 'redis:alpine'
-        container_name: myredis
         depends_on:
             - mypostgres
 
     mypostgres:
         image: 'postgres:alpine'
-        container_name: mypostgres
         environment:
           - POSTGRES_PASSWORD=1qaz2wsx
         volumes:
           - /Users/reckony/Desktop/devops/projekt/webapp/docker_project/postgresdata:/var/lib/postgresql/data
 
-    mynginx:
+    nginx:
         restart: always
         build:
             dockerfile: Dockerfile
@@ -28,16 +26,16 @@ services:
             - '8080:80'
 
     backend:
-        container_name: mybackend
         restart: always
         build:
             dockerfile: Dockerfile
             context: ./backend
         volumes:
-            - "/opt/myapp/node_modules"
-            - ./backend:/opt/myapp
+            - /opt/app/node_modules
+            - ./backend:/opt/app
+
         ports:
-            - '4000:4000'
+            - '5000:5000'
         environment:
             - REDIS_HOST=myredis
             - REDIS_PORT=6379
@@ -49,16 +47,15 @@ services:
         depends_on:
             - mypostgres
             - myredis
-            - mynginx
+            - nginx
 
     frontend:
-        container_name: myfrontend
         restart: always
         build:
             dockerfile: Dockerfile
             context: ./frontend
         volumes:
-            - "/opt/app/node_modules"
+            - /opt/app/node_modules
             - ./frontend:/opt/app
         environment:
             CHOKIDAR_USEPOLLING: "true"
@@ -66,7 +63,4 @@ services:
         ports:
             - 3000:3000
         depends_on:
-            - mypostgres
-            - myredis
             - backend
-            - mynginx
