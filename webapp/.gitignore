@@ -1,9 +1,9 @@
+.DS_Store
 *node_modules/
 *postgres_data/
 *postgresdata/
 *.idea/
 *git status
-.DS_Store
 
 # Logs
 logs

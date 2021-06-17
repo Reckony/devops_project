@@ -1,28 +1,20 @@
+import React from 'react';
 import './App.css';
-import {useState} from "react";
-import Post from "./Post";
-import MyForm from "./MyForm";
+import DeleteJewel from "./DeleteJewel";
+import ShowJewels from "./ShowJewels";
+import AddJewel from "./AddJewel";
+import UpdateJewel from "./UpdateJewel";
 
-function App(){
-
-    const [ initialValue, setInitialValue ] = useState(1234);
-
-    const handleInitialValue = (event) => {
-            setInitialValue(event.target.value);
-            };
-
+const App = (props) => {
 
     return (
-            <div>
-                {initialValue} <br/>
-
-                <input onChange={handleInitialValue}/>
-
-                <Post noPosts={initialValue} changeParentHandler={setInitialValue}/>
-
-                <MyForm />
-            </div>
-        );
-    }
+        <>
+            <AddJewel/>
+            <DeleteJewel/>
+            <UpdateJewel/>
+            <ShowJewels/>
+        </>
+    );
+}
 
 export default App;
