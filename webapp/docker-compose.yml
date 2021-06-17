@@ -1,30 +1,41 @@
 version: '3'
 
+#networks:
+#    mymulticont:
+#        name: mymulticont
+
 services:
+    myredis:
+        image: 'redis:alpine'
+        container_name: myredis
+        depends_on:
+            - mypostgres
+
     mypostgres:
         image: 'postgres:alpine'
+        container_name: mypostgres
         environment:
           - POSTGRES_PASSWORD=1qaz2wsx
         volumes:
-          - ./postgresdata:/var/lib/postgresql/data
+          - /Users/reckony/Desktop/devops/projekt/webapp/docker_project/postgresdata:/var/lib/postgresql/data
 
-    myredis:
-        image: 'redis:alpine'
-
-    nginx:
+    mynginx:
         restart: always
         build:
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile
             context: ./nginx
         ports:
             - '8080:80'
 
     backend:
+        container_name: mybackend
+        restart: always
         build:
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile
             context: ./backend
         volumes:
-            - "/opt/app/node_modules"
+            - "/opt/myapp/node_modules"
+            - ./backend:/opt/myapp
         ports:
             - '4000:4000'
         environment:
@@ -38,19 +49,24 @@ services:
         depends_on:
             - mypostgres
             - myredis
-            - nginx
+            - mynginx
 
     frontend:
+        container_name: myfrontend
+        restart: always
         build:
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile
             context: ./frontend
         volumes:
             - "/opt/app/node_modules"
+            - ./frontend:/opt/app
         environment:
             CHOKIDAR_USEPOLLING: "true"
         tty: true
+        ports:
+            - 3000:3000
         depends_on:
             - mypostgres
             - myredis
             - backend
-            - nginx
+            - mynginx
