@@ -1,24 +1,25 @@
-#apiVersion: apps/v1
-#kind: ReplicaSet
-#metadata:
-#  name: mynginx-replicaset
-#  labels:
-#    component: web
-#    app: my-app
-#
-#spec:
-#  template:
-#    metadata:
-#      name: mynginx-pod
-#      labels:
-#        component: web
-#        app: my-app
-#    spec:
-#      containers:
-#        - name: mynginx-container
-#          image: linras/mynginx:k8s
-#  replicas: 5
-#  selector:
-#    matchLabels:
-#      app: my-app
-#      component: web
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynginx-replicaset
+  namespace: app
+  labels:
+    component: web
+    app: myapp
+
+spec:
+  template:
+    metadata:
+      name: mynginx-pod
+      labels:
+        component: web
+        app: myapp
+    spec:
+      containers:
+        - name: mynginx-container
+          image: martal3szczynska/mynginx:latest
+  replicas: 5
+  selector:
+    matchLabels:
+      app: myapp
+      component: web

@@ -3,10 +3,10 @@ kind: PersistentVolume
 metadata:
   name: pv-local
   namespace: app
-    labels:
-      component: postgres
-      type: local
-      app: myapp
+  labels:
+    component: postgres
+    type: local
+    app: myapp
 spec:
   storageClassName: manual
   capacity:
@@ -14,5 +14,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-#    path: "/host_mnt/c/Users/Linras/dev/k8s"
     path: /Users/reckony/Desktop/devops/projekt/webapp/k8s/data

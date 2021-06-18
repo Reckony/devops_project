@@ -1,25 +1,26 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: mynginx-deployment
-#  labels:
-#    component: web
-#    app: my-app
-#
-#spec:
-#  template:
-#    metadata:
-#      name: mynginx-pod
-#      labels:
-#        component: web
-#        app: my-app
-#    spec:
-#      containers:
-#        - name: mynginx-container
-#          image: linras/mynginx:k8s
-#
-#  replicas: 3
-#  selector:
-#    matchLabels:
-#      app: my-app
-#      component: web
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynginx-deployment
+  namespace: app
+  labels:
+    component: web
+    app: myapp
+
+spec:
+  template:
+    metadata:
+      name: mynginx-pod
+      labels:
+        component: web
+        app: myapp
+    spec:
+      containers:
+        - name: mynginx-container
+          image: martal3szczynska/mynginx:latest
+
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+      component: web

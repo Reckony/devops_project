@@ -1,14 +1,15 @@
-#apiVersion: v1
-#kind: Pod
-#metadata:
-#  name: mynginx-pod
-#  labels:
-#    component: web
-#    name: my-app
-#
-#spec:
-#  containers:
-#    - name: mynginx
-#      image: linras/mynginx:k8s
-#      ports:
-#        - containerPort: 80
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynginx-pod
+  namespace: app
+  labels:
+    component: web
+    app: myapp
+
+spec:
+  containers:
+    - name: mynginx
+      image: martal3szczynska/mynginx:latest
+      ports:
+        - containerPort: 80

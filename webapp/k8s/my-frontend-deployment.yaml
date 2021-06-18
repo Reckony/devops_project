@@ -4,9 +4,10 @@ kind: Deployment
 
 metadata:
     name: myfrontend-deployment
+    namespace: app
     labels:
         app: myapp
-        type: frontend
+#        type: frontend
         component: frontend
 
 spec:
@@ -29,5 +30,5 @@ spec:
     selector:
         matchLabels:
             app: myapp
-            type: frontend
+#            type: frontend
             component: frontend

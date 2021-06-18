@@ -23,4 +23,4 @@ spec:
             service:
               name: myfrontend-clusterip
               port:
-                number: 3000  # was 80 with nginx
+                number: 80
