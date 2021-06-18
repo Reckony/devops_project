@@ -5,27 +5,29 @@ kind: Deployment
 metadata:
     name: myfrontend-deployment
     labels:
-        app: my-app
+        app: myapp
         type: frontend
+        component: frontend
 
 spec:
     template:
         metadata:
             name: myfrontend-pod
             labels:
-                app: my-app
+                app: myapp
                 type: frontend
 
         spec:
             containers:
                 - name: myfrontend-container
-                  image: linras/myfrontend:k8s
+                  image: martal3szczynska/myfrontend:latest
                   stdin: true
                   ports:
                     - containerPort: 3000
 
-    replicas: 3
+    replicas: 1 # was 3
     selector:
         matchLabels:
-            app: my-app
+            app: myapp
             type: frontend
+            component: frontend

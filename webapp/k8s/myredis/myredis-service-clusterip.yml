@@ -3,6 +3,10 @@ kind: Service
 
 metadata:
     name: myredis-clusterip
+    namespace: app
+    labels:
+        component: redis
+        app: myapp
 
 spec:
     type: ClusterIP
@@ -11,5 +15,6 @@ spec:
           port: 6379
 
     selector:
-        app: my-app
+        app: myapp
+        component: redis
         type: cache

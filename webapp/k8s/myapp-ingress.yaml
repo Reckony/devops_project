@@ -1,25 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: myapp-ingress
+  name: my-ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - http:
+    - host: localapp
+      http:
         paths:
-        - path: "/api/(.*)"
+        - path: /api/(.*)
           pathType: Prefix
           backend:
             service:
               name: mybackend-clusterip
               port:
                 number: 5000
-        - path: "/(.*)"
+        - path: /(.*)
           pathType: Prefix
           backend:
             service:
               name: myfrontend-clusterip
               port:
-                number: 80
+                number: 3000  # was 80 with nginx

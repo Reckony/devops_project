@@ -10,4 +10,4 @@ spec:
       nodePort: 31001
   selector:
     component: backend
-    name: my-app
+    name: myapp
