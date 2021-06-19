@@ -16,7 +16,8 @@ spec:
             name: myfrontend-pod
             labels:
                 app: myapp
-                type: frontend
+                component: frontend
+#                type: frontend
 
         spec:
             containers:
