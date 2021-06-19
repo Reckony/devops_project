@@ -21,7 +21,7 @@ const DeleteJewel = (props) => {
             <div className="Div-element">
                 <form>
                     <input type='text' value={jewelId} onChange={event => setJewelId(event.target.value)}/><br/>
-                    <input type='submit' value='Usuń produkt' onClick={handleDelete}/>
+                    <input type='submit' value='Delete product' onClick={handleDelete}/>
                 </form>
             </div>
         </>

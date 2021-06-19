@@ -22,6 +22,7 @@ kubectl apply -f mypostgres/postgres-deployment.yaml
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/cloud/deploy.yaml
 
+# this likes to get error few times, just run it again
 kubectl create -f myapp-ingress.yaml
 
 kubectl apply -f my-backend-node-port.yaml

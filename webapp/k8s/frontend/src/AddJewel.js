@@ -21,8 +21,8 @@ const AddJewel = (props) => {
     return (
         <>
             <div className="Div-element">
-                <input type='text' value={teamName} onChange={event => setJewelName(event.target.value)}/><br/>
-                <input type='submit' value='Dodaj produkt' onClick={handleSubmit}/>
+                <input type='text' value={jewelName} onChange={event => setJewelName(event.target.value)}/><br/>
+                <input type='submit' value='Add product' onClick={handleSubmit}/>
             </div>
         </>
     );

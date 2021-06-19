@@ -27,6 +27,9 @@ services:
             context: ./nginx
         ports:
             - "8080:80"
+        depends_on:
+          - backend
+          - frontend
 
     backend:
         container_name: backend
@@ -37,7 +40,7 @@ services:
         volumes:
             - /opt/app/node_modules
 #            - ./backend:/opt/app
-            - /Users/reckony/Desktop/devops/projekt/webapp/frontend:/opt/app
+            - /Users/reckony/Desktop/devops/projekt/webapp/backend:/opt/app
 
         ports:
             - "5000:5000"
@@ -52,7 +55,6 @@ services:
         depends_on:
             - mypostgres
             - myredis
-            - nginx
 
     frontend:
         container_name: frontend

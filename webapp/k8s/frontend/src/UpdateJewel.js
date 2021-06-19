@@ -32,7 +32,7 @@ const UpdateJewel = (props) => {
                     Name: <input type='text' value={jewelName} onChange={event => setJewelName(event.target.value)}/><br/>
                     Price: <input type='text' value={jewelPrice} onChange={event => setPrice(event.target.value)}/><br/>
                     Number: <input type='text' value={jewelNumber} onChange={event => setNumber(event.target.value)}/><br/>
-                    <input type='submit' value='Zaktualizuj produkt' onClick={handleUpdate}/>
+                    <input type='submit' value='Update product' onClick={handleUpdate}/>
                 </form>
             </div>
         </>

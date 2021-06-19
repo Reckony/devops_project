@@ -9,7 +9,7 @@ const ShowJewels = (props) => {
     const [jewelId, setJewelId] = useState({});
 
 
-    const handleShowResult = (event) => {
+    const handleShowJewels = (event) => {
         axios.get('/api/jewels')
             .then(response => setJewels(response.data))
             .catch(error => console.log(error));
@@ -17,7 +17,7 @@ const ShowJewels = (props) => {
         event.preventDefault();
     };
 
-    const handleShowTeam = (event) => {
+    const handleShow = (event) => {
         setJewelId(event.target.value);
         axios.get(`/api/jewels/${jewelId}`
         )
@@ -29,7 +29,7 @@ const ShowJewels = (props) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            handleShowTeam(event)
+            handleShow(event)
         }
     }
 
@@ -39,7 +39,7 @@ const ShowJewels = (props) => {
                 <form>
                     <input type='text' defaultValue={''} value={jewelId}
                            onChange={event => setJewelId(event.target.value)} onKeyDown={handleKeyDown}/><br/>
-                    <button>Szukaj produktu po ID</button>
+                    <button>Find by Id</button>
                     {
                         jewels
                             .map(jewel => jewel.id === jewel ? <div key={jewel.id}>{jewel.name} | {jewel.price}</div> :

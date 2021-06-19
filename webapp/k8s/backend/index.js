@@ -1,3 +1,4 @@
+const keys = require("./keys");
 const express = require("express");
 const cors = require("cors");
 const redis = require("redis");
@@ -12,8 +13,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // REDIS
 const redisClient = redis.createClient({
-    host: "myredis",
-    port: 6379
+    host: keys.redisHost,
+    port: keys.redisPort
 });
 
 redisClient.on('connect', () => {
@@ -26,11 +27,16 @@ redisClient.on('error', (error) => {
 
 // POSTGRES
 const pgClient = new Pool({
-    user: "postgres",
-    password: "1qaz2wsx",
-    database: "postgres",
-    host: "mypostgres",
-    port: "5432"
+//    user: "postgres",
+//    password: "1qaz2wsx",
+//    database: "postgres",
+//    host: "mypostgres",
+//    port: "5432"
+    user: keys.pgUser,
+    password: keys.pgPassword,
+    database: keys.pgDatabase,
+    host: keys.pgHost,
+    port: keys.pgPort
 });
 
 pgClient.on('error', () => {
@@ -49,6 +55,7 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`API listening on port ${PORT}`);
+    console.log(keys);
 });
 
 var global_id = 1
