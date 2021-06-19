@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {useState} from "react";
+import {useState} from 'react';
 import './App.css';
 
 const DeleteJewel = (props) => {
@@ -9,7 +9,7 @@ const DeleteJewel = (props) => {
 
     const handleDelete = (event) => {
         setJewelId(event.target.value);
-        axios.delete(`/api/jewel/${jewelId}`)
+        axios.delete(`/api/jewels/${jewelId}`)
             .then(response => response.data)
             .catch(error => console.log(error))
 

@@ -11,3 +11,7 @@ docker build . -t ml3szczynska/mywebapp
 docker run -d --rm --network my_app --name myredis redis:alpine
 docker run -d --rm --network my_app --name mypostgres -e POSTGRES_PASSWORD=1qaz2wsx -v /Users/reckony/Desktop/devops/projekt/postresdata:/var/lib/postgresql/data postgres:alpine
 # docker run --rm --network my_app --name mywebapp -p 9090:9090 ml3szczynska/mywebapp
+
+compose:
+
+COMPOSE_HTTP_TIMEOUT=300 docker-compose up --build
