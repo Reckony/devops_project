@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: my-backend
-          image: martal3szczynska:/mybackend:latest
+          image: martal3szczynska/mybackend:latest
           ports:
             - containerPort: 5000
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 kubectl apply -f my-app-namespace.yaml
 
 kubectl apply -f my-app-config.yaml
@@ -32,4 +34,4 @@ kubectl create -f my-frontend-clusterip.yaml
 
 kubectl create -f my-frontend-deployment.yaml
 
-kubectl get deploy
+kubectl get deploy -n app
