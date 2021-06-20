@@ -11,7 +11,7 @@ const UpdateJewel = (props) => {
 
     const handleUpdate = (event) => {
         setJewelId(event.target.value);
-        axios.put(`/api/jewels/${jewelId}`, {
+        axios.put(`localhost:8080/api/jewels/${jewelId}`, {
             name: jewelName,
             price: jewelPrice
         })

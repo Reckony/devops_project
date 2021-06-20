@@ -10,7 +10,7 @@ const AddJewel = (props) => {
 
     const handleSubmit = (event) => {
     console.log("Data to add ${jewelName}, ${jewelPrice}");
-        axios.post('/api/jewels', {
+        axios.post('localhost:8080/api/jewels', {
             name: jewelName,
             price: jewelPrice
         })

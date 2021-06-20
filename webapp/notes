@@ -15,3 +15,12 @@ docker run -d --rm --network my_app --name mypostgres -e POSTGRES_PASSWORD=1qaz2
 compose:
 
 COMPOSE_HTTP_TIMEOUT=300 docker-compose up --build
+
+curl:
+
+curl --header "Content-Type: application/json" --request POST --data '{"name":"Ametyst","price":"25"}' http://localhost:8080/api/jewels
+curl --header "Content-Type: application/json" --request POST --data '{"name":"Granat","price":"30"}' http://localhost:8080/api/jewels
+
+curl --header "Content-Type: application/json" --request DELETE http://localhost:5000/jewels?id=1
+
+curl --request GET http://localhost:5000/jewels

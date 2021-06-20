@@ -9,7 +9,7 @@ const DeleteJewel = (props) => {
 
     const handleDelete = (event) => {
         setJewelId(event.target.value);
-        axios.delete(`/api/jewels/${jewelId}`)
+        axios.delete(`localhost:8080/api/jewels/${jewelId}`)
             .then(response => response.data)
             .catch(error => console.log(error))
 

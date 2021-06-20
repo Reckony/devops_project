@@ -28,11 +28,6 @@ redisClient.on('error', (error) => {
 
 // POSTGRES
 const pgClient = new Pool({
-//    user: "postgres",
-//    password: "1qaz2wsx",
-//    database: "postgres",
-//    host: "mypostgres",
-//    port: "5432"
     user: keys.pgUser,
     password: keys.pgPassword,
     database: keys.pgDatabase,
@@ -44,13 +39,36 @@ pgClient.on('error', () => {
     console.log("Postgres not connected");
 });
 
+//pgClient
+//.query('CREATE TABLE IF NOT EXISTS jewelry (id UUID UNIQUE, name TEXT, price INT, PRIMARY KEY (id))')
+//.catch( (err) => {
+//    console.log(err);
+//});
+
+//tylko raz przy zmianie tabeli
+//pgClient
+//.query('DROP TABLE jewelry;')
+//.catch( (err) => {
+//    console.log(err);
+//});
+
 pgClient
-.query('CREATE TABLE IF NOT EXISTS jewelry (id UUID UNIQUE, name TEXT, price INT, PRIMARY KEY (id))')
+.query('CREATE TABLE IF NOT EXISTS jewelry (id SERIAL PRIMARY KEY UNIQUE NOT NULL, name VARCHAR(20), price INT);')
 .catch( (err) => {
     console.log(err);
 });
 
-//var global_id = 1
+pgClient
+.query("INSERT INTO jewelry (name, price) VALUES ('Ametyst_bracelet', 25);")
+.catch( (err) => {
+    console.log(err);
+});
+
+pgClient
+.query("INSERT INTO jewelry (name, price) VALUES ('Amazonite_bracelet', 30);")
+.catch( (err) => {
+    console.log(err);
+});
 
 // GET ALL
 app.get('/jewels', (request, response) => {
@@ -68,7 +86,7 @@ app.get('/jewels', (request, response) => {
 
 // GET by ID
 app.get('/jewels/:id', (request, response) => {
-    const id = request.params.id;
+    const id = request?.params?.id;
 
     redisClient.exists(id, (err, responseExist) => {
         if (responseExist == 1) {
@@ -97,39 +115,51 @@ app.get('/jewels/:id', (request, response) => {
 })
 
 // POST
-app.post('/jewels', (request, response) => {
-    console.log('Executed endpoint POST /jewels with name' + request.body.name);
-    const Id = uuidv4();
-    const name = request.body.name;
-    const price = request.body.price;
+//app.post('/jewels', (request, response) => {
+//    console.log('Executed endpoint POST /jewels with name' + request.body.name);
+//    const name = request?.body?.name;
+//    const price = request?.body?.price;
+//
+//    redisClient.hmset({'name': `${name}`, 'price': `${price}`});
+//    pgClient
+//        .query('INSERT INTO jewelry (name, price) VALUES ($1, $2)', [name, price])
+//        .catch(pgError => console.log(pgError));
+//    response.status(201).send(`Added jewel name ${name}, price ${price}`);
+//});
 
-    redisClient.hmset(`${Id}`, {'name': `${name}`, 'price': `${price}`});
+// POST
+app.post('/jewels', (request, response) => {
+    console.log('Executed endpoint POST /jewels with name' + request?.body?.name);
+    const name = request?.body?.name ?? "";
+    const price = request?.body?.price ?? 0;
+
+//    redisClient.hmset(`${Id}`, {'name': `${name}`, 'price': `${price}`});
     pgClient
-        .query('INSERT INTO jewelry (id, name, price) VALUES ($1, $2, $3)', [Id, name, price])
+        .query(`INSERT INTO jewelry (name, price) VALUES ('${name}', ${price} );`)
         .catch(pgError => console.log(pgError));
     response.status(201).send(`Added jewel name ${name}, price ${price}`);
 });
 
 // DELETE
 app.delete('/jewels/:id', (request, response) => {
-    const id = request.params.id;
+    const id = request?.params?.id;
     console.log(`Executed endpoint DELETE /jewels. Removed data of db with id ${id}`);
-
-    pgClient
-        .query('DELETE FROM jewelry WHERE id = $1', [id])
-        .catch(pgError => console.log(pgError))
+    if(id)
+        pgClient
+            .query('DELETE FROM jewelry WHERE id = $1;', [id])
+            .catch(pgError => console.log(pgError))
     response.status(204);
 });
 
 // UPDATE
 app.put('/jewels/:id', (request, response) => {
-    const id = request.params.id;
-    const {name, price} = request.body;
+    const id = request?.params?.id;
+    const {name, price} = request?.body;
     console.log(`Executed endpoint PUT /jewels. Update jewel with id ${id}. New data: ${name}, ${price}`);
-
-    pgClient
-        .query('UPDATE jewelry SET name = $1, price = $2 WHERE id = $3', [name, price, id])
-        .catch(pgError => console.log(pgError));
+    if(id)
+        pgClient
+            .query("UPDATE jewelry SET name = '$1', price = $2 WHERE id = $3;", [name, price, id])
+            .catch(pgError => console.log(pgError));
     response.status(201).send(`Updated jewel with ID: ${id}. New data: ${name}, ${price}`);
 });
 
